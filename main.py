@@ -1,7 +1,7 @@
 from hashFunctions import hashFunction
 
 fileName = 'ArchNombres1.txt'
-myFile = open(fileName, 'r')
+myFile = open(fileName, 'r', encoding='utf-8')
 myHashDict = {i:(None,None) for i in range(103)}
 
 
@@ -12,13 +12,32 @@ def insertHashTable(hashValue, number, name):
         return
     else:
         while(myHashDict[hashValue][0] != None ):
+            a=hashValue
             jump = 1
+            hashValue = a + (jump)**2 
             if (hashValue >= 102):
                 hashValue -= 102
-            hashValue += jump * 2
             insertHashTable(hashValue, number, name)
+            jump+=1
             return 
 
+def contains(number):
+  hashValue=hashFunction(number)
+  if (myHashDict[hashValue][0] == number):      
+    return (hashValue, myHashDict[hashValue][0], myHashDict[hashValue][1])
+  else:
+    while(myHashDict[hashValue][0] != None ):
+            a=hashValue
+            jump = 1
+            hashValue = a + (jump)**2 
+            if (hashValue >= 102):
+                hashValue -= 102
+            if myHashDict[hashValue][0] == number:
+                
+                return (hashValue, myHashDict[hashValue][0], myHashDict[hashValue][1])
+            jump+=1
+    return "Identificacion no encontrada"
+    
 
 for element in myFile: 
     number = int(element.split(',')[0])
@@ -35,3 +54,4 @@ for key in myHashDict:
 
 print(counter)
 
+print(contains(565))
