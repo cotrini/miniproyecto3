@@ -1,12 +1,8 @@
-from hashFunctions import hashFunction
+from HashFunctions import hashFunction
 from tkinter import *
 from tkinter import ttk
 
-# fileName = 'ArchNombres1.txt'
-# myFile = open(fileName, 'r', encoding='utf-8')
-#myHashDict = {i:(None,None) for i in range(103)}
 collisions = 0
-
 def run(hashTableSize):
     global collisions
     collisions = 0
@@ -69,15 +65,12 @@ def fileWriter(myHashDict : dict):
 
 def interface():
 
-    
-
-
     #main windows Section
     mainWindow = Tk()
     mainWindow.title('Hash Tables Vizualizator')
-    mainWindow.geometry('1920x1080')
+    mainWindow.geometry('600x600')
     mainWindow.resizable(0,0)
-    mainWindow.config(bg='gray')
+    mainWindow.config(bg='white')
 
     #menu frame Section
     recordFound = StringVar()
@@ -107,7 +100,7 @@ def interface():
         
 
     menuFrame = Frame(mainWindow)
-    menuFrame.grid(row=0, column=2, padx=10,pady=0)
+    menuFrame.grid(row=2, column=0, padx=10,pady=0)
     menuFrame.config(bg='white')
     menuFrame.config(width=800, height=350)
     menuLabel = Label(menuFrame, text='Menu Section')
@@ -142,7 +135,7 @@ def interface():
         collisionsAmounth.set(collisions)
 
     tableFrame = Frame(mainWindow)
-    tableFrame.grid(row=0, column=1, padx=10,pady=0)
+    tableFrame.grid(row=0, column=0, padx=10,pady=0)
     tableFrame.config(bg='white')
     tableFrameLabel = Label(tableFrame, text='Table Hash Section')
     tableFrameLabel.grid(row=0, column=0, padx=10,pady=10)
@@ -160,10 +153,10 @@ def interface():
     collisionsAmounthLabel= Label(tableFrame, textvariable=collisionsAmounth)
     collisionsAmounthLabel.grid(row=2, column=2, padx=10,pady=10)
 
-        #Dataset Frame Section this section contains 10 registers above the find register 
+    #Dataset Frame Section this section contains 10 registers above the find register 
 
     datasetFrame = Frame(mainWindow)
-    datasetFrame.grid(row=1, column= 1, padx=10, pady=10)
+    datasetFrame.grid(row=1, column= 0, padx=10, pady=10)
     datasetFrame.config(bg='white', width=300)
     datasetFrameLabel = Label(datasetFrame, text='Dataset Information (10 registers)')
     datasetFrameLabel.grid(row=0, column=0, padx=10, pady=10)
@@ -175,24 +168,6 @@ def interface():
     treeview.heading('col1', text='CODE', anchor=CENTER)
     treeview.heading('col2', text='NAME', anchor=CENTER)
     treeview.grid(row=1)
-
-    circles = Canvas(mainWindow,width=1100, height=800)
-    circles.grid(row=1,column=2)
-    circles.create_oval(500,50,600,150)
-    circles.create_oval(300,200,400,300)
-    circles.create_oval(600,200,700,300)
-    circles.create_oval(500,350,600,450)
-    circles.create_oval(500,350,600,450)
-    circles.create_oval(500,350,600,450)
-    circles.create_oval(500,350,600,450)
-    circles.create_oval(500,50,600,150)
-    circles.create_oval(500,50,600,150)
-    circles.create_oval(500,50,600,150)
-    circles.create_oval(500,50,600,150)
-    circles.create_oval(500,50,600,150)
-    circles.create_oval(500,50,600,150)
-    circles.create_oval(500,50,600,150)
-    circles.create_oval(500,50,600,150)
     mainWindow.mainloop()
 
 
