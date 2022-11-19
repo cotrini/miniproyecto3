@@ -1,67 +1,27 @@
-from HashFunctions import hashFunction
+from HashFunctions import insertHashTable, contains
 from tkinter import *
 from tkinter import ttk
+from BinaryHeap import *
 
 collisions = 0
-def run(hashTableSize):
+
+def main(hashTableSize):
+    myBinaryHeap = BinaryHeap()
     global collisions
-    collisions = 0
     fileName = 'ArchNombres1.txt'
-    myFile = open(fileName, 'r', encoding='utf-8')
-    global myHashDict
-    myHashDict = {i:(None,None) for i in range(hashTableSize)}
-
-    for element in myFile: 
-        number = int(element.split(',')[0])
-        name = element.split(',')[1]
-        hashValue = hashFunction(number, hashTableSize)
-        insertHashTable(hashValue,number,name, myHashDict, hashTableSize)
-    fileWriter(myHashDict)
-
-def insertHashTable(hashValue, number, name, myHashDict, hashTableSize):
-    global collisions
-    if ( myHashDict[hashValue][0] == None):
-        myHashDict[hashValue] = (number,name)
-        return
-    else:
-        collisions += 1
-        a=hashValue
-        jump = 1
-        while(myHashDict[hashValue][0] != None ):
-            hashValue = (a + (jump)**2 ) % hashTableSize
-            if (hashValue >= hashTableSize):
-                hashValue -= hashTableSize
-            jump+=1
-        myHashDict[hashValue] = (number, name)
-        return 
-
-def contains(number, hashTableSize):
-  hashValue=hashFunction(number, hashTableSize)
-  if (myHashDict[hashValue][0] == number):      
-    return (hashValue, myHashDict[hashValue][0], myHashDict[hashValue][1])
-  else:
-    a=hashValue
-    jump = 1
-    while(myHashDict[hashValue][0] != None ):
-            hashValue = (a + (jump)**2)%hashTableSize
-            if (hashValue >= hashTableSize):
-                hashValue -= hashTableSize
-            if myHashDict[hashValue][0] == number:
-                return (hashValue, myHashDict[hashValue][0], myHashDict[hashValue][1])
-            jump+=1
-    return "0"
-    
-def fileWriter(myHashDict : dict):
-    fileName = 'dataset.txt'
-    myFile = open(fileName, 'w', encoding='utf-8')
-    for key in myHashDict:
-        if(myHashDict[key][0] == None):
-            myFile.write(str(key)+';'+str(myHashDict[key][0])+';'+str(myHashDict[key][1])+'\n')
-        else:
-            myFile.write(str(key)+';'+str(myHashDict[key][0])+';'+str(myHashDict[key][1]))
+    myFile = open(fileName, encoding='utf-8')
+    idList = []
+    content= myFile.readlines()
+    index = 0
+    for register in content:
+        id = int(register.split(',')[0])
+        idList.append(id)
+        myBinaryHeap.insert(id, index)
+        index +=1
+    collisions = insertHashTable(idList, hashTableSize)
+    return myBinaryHeap.getTenRegisters()
 
 
-   
 
 def interface():
 
@@ -84,17 +44,13 @@ def interface():
             hashValue.set(information[0])
             codeValue.set(information[1])
             nameValue.set(information[2])
-            dataset = open('dataset.txt', 'r', encoding= 'utf-8')
-            treeview.delete(*treeview.get_children())
-            for element in dataset:
-                if(int(element.split(';')[0]) >= int(information[0]) and int(element.split(';')[0]) <= int(element.split(';')[0]) + 10):
-                    treeview.insert('', END,text=element.split(';')[0], values=(element.split(';')[1],element.split(';')[2]))
+
         else:
             recordFound.set('Record Not Found')
             hashValue.set('')
             codeValue.set('')
             nameValue.set('')
-            treeview.delete(*treeview.get_children())
+
 
         
         
@@ -131,8 +87,12 @@ def interface():
     collisionsAmounth = StringVar()
     collisionsAmounth.set(collisions)
     def collisionsAmounthFunction():
-        run(int(hashTableSize.get()))
+        tenRegisters = main(int(hashTableSize.get()))
         collisionsAmounth.set(collisions)
+        dataNames = open('ArchNombres1.txt', encoding='utf-8').readlines()
+        for register in tenRegisters:
+            treeview.insert('', END,text=contains(int(register[0]),int(hashTableSize.get()))[0], values=(register[0],dataNames[register[1]].split(',')[1]))
+
 
     tableFrame = Frame(mainWindow)
     tableFrame.grid(row=0, column=0, padx=10,pady=0)
@@ -170,8 +130,4 @@ def interface():
     treeview.grid(row=1)
     mainWindow.mainloop()
 
-
-
-
 interface()
-# run(103)
