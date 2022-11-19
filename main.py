@@ -90,6 +90,7 @@ def interface():
         tenRegisters = main(int(hashTableSize.get()))
         collisionsAmounth.set(collisions)
         dataNames = open('ArchNombres1.txt', encoding='utf-8').readlines()
+        treeview.delete(*treeview.get_children())
         for register in tenRegisters:
             treeview.insert('', END,text=contains(int(register[0]),int(hashTableSize.get()))[0], values=(register[0],dataNames[register[1]].split(',')[1]))
 
